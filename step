@@ -35,7 +35,9 @@ view->syntax->python
 STEP4:
 package install:
 Prefences->package control->install package:
-anaconda :code autocomplete
 SublimeREPL：debug,Run
 Bracket Highlighter：match for (,[ and or
 SublimeLinter:code pep8 format check
+
+
+pip3 install --upgrade --pre CodeIntel
