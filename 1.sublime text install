@@ -35,9 +35,9 @@ view->syntax->python
 STEP4:
 package install:
 Prefences->package control->install package:
-SublimeREPL：debug,Run
-Bracket Highlighter：match for (,[ and or
-SublimeLinter:code pep8 format check
-
+SublimeREPL
+Bracket Highlighter
+SublimeLinter
+CodeIntel
 
 pip3 install --upgrade --pre CodeIntel
