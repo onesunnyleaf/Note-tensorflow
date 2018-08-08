@@ -1,0 +1,47 @@
+1.Convolutional layer:
+tf.nn.conv2d(
+    input,
+    filter,
+    strides,
+    padding,
+    use_cudnn_on_gpu=True,
+    data_format='NHWC',
+    dilations=[1, 1, 1, 1],
+    name=None
+)
+Computes a 2-D convolution given 4-D input and filter tensors.
+
+Given an input tensor of shape [batch, in_height, in_width, in_channels] and a filter / kernel tensor of shape [filter_height, filter_width, in_channels, out_channels], this op performs the following:
+
+Flattens the filter to a 2-D matrix with shape [filter_height * filter_width * in_channels, output_channels].
+Extracts image patches from the input tensor to form a virtual tensor of shape [batch, out_height, out_width, filter_height * filter_width * in_channels].
+For each patch, right-multiplies the filter matrix and the image patch vector.
+In detail, with the default NHWC format,
+
+output[b, i, j, k] =
+    sum_{di, dj, q} input[b, strides[1] * i + di, strides[2] * j + dj, q] *
+                    filter[di, dj, q, k]
+Must have strides[0] = strides[3] = 1. For the most common case of the same horizontal and vertices strides, strides = [1, stride, stride, 1].
+
+Args:
+input: A Tensor. Must be one of the following types: half, bfloat16, float32, float64. A 4-D tensor. The dimension order is interpreted according to the value of data_format, see below for details.
+filter: A Tensor. Must have the same type as input. A 4-D tensor of shape [filter_height, filter_width, in_channels, out_channels]
+strides: A list of ints. 1-D tensor of length 4. The stride of the sliding window for each dimension of input. The dimension order is determined by the value of data_format, see below for details.
+padding: A string from: "SAME", "VALID". The type of padding algorithm to use.
+use_cudnn_on_gpu: An optional bool. Defaults to True.
+data_format: An optional string from: "NHWC", "NCHW". Defaults to "NHWC". Specify the data format of the input and output data. With the default format "NHWC", the data is stored in the order of: [batch, height, width, channels]. Alternatively, the format could be "NCHW", the data storage order of: [batch, channels, height, width].
+dilations: An optional list of ints. Defaults to [1, 1, 1, 1]. 1-D tensor of length 4. The dilation factor for each dimension of input. If set to k > 1, there will be k-1 skipped cells between each filter element on that dimension. The dimension order is determined by the value of data_format, see above for details. Dilations in the batch and depth dimensions must be 1.
+name: A name for the operation (optional).
+Returns:
+A Tensor. Has the same type as input.
+
+结论：input--->output（第四维度k来自filter的out_channels）。
+思考1：why zero-padding,or tune stride? 
+思考2:图像上内容位置不一样，结果是否受影响？
+     回答：不会受影响，每个卷积层中使用的filter参数都是一样的，直观的讲，共享过滤器参数可以使图像内容不受
+                       位置影响，无论图像上的内容在那个位置，经过卷积层和结果不受影响
+思考3:参数个数有多少？
+     回答：只与filter的尺寸，深度。以及当前层节点矩阵的深度有关
+          例如：输入层矩阵的维度32x32x3，第一层卷积层使用尺寸5x5大小，深度为16的filter，参数有5x5x3x16个
+
+
