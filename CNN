@@ -1,4 +1,5 @@
 1.Convolutional layer:
+
 tf.nn.conv2d(
     input,
     filter,
@@ -35,13 +36,21 @@ name: A name for the operation (optional).
 Returns:
 A Tensor. Has the same type as input.
 
-结论：input--->output（第四维度k来自filter的out_channels）。
+结论：从input到output（第四维度k来自filter的out_channels），每个节点Node的输入只是上一层（输入层）的一小块，并对每个小块进行更深入的分析，所以每个节点深度会增加；。
 思考1：why zero-padding,or tune stride? 
+     回答：被filter扫描后形成的矩阵可能尺寸变小，所以为了keep矩阵尺寸，要么zero-padding,要么tune stride
+           use zero-pading:OutputArray_width=ceil((InputArray_width-filter_width)/stride_width) #ceil向上取整
+                           OutputArray_lenght.........same as pre
+           no use zero-pading:OutputArray_width=ceil((InputArray_width-filter_width+1)/stride_width) #ceil向上取整
+                              OutputArray_lenght......same as pre
+
 思考2:图像上内容位置不一样，结果是否受影响？
      回答：不会受影响，每个卷积层中使用的filter参数都是一样的，直观的讲，共享过滤器参数可以使图像内容不受
                        位置影响，无论图像上的内容在那个位置，经过卷积层和结果不受影响
 思考3:参数个数有多少？
      回答：只与filter的尺寸，深度。以及当前层节点矩阵的深度有关
           例如：输入层矩阵的维度32x32x3，第一层卷积层使用尺寸5x5大小，深度为16的filter，参数有5x5x3x16个
+思考4:strides怎么设置？
+    回答：strides第一维和最后一维都为1，原因是卷积层的步长只对矩阵的长和宽有效
 
 
