@@ -38,6 +38,6 @@ Prefences->package control->install package:
 SublimeREPL
 Bracket Highlighter
 SublimeLinter
-CodeIntel
+CodeIntel   ------not successfuly installed,the china Network restrict
 
-pip3 install --upgrade --pre CodeIntel
+#pip3 install --upgrade --pre CodeIntel
