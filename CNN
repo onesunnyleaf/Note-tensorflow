@@ -50,8 +50,15 @@ A Tensor. Has the same type as input.
 思考3:参数个数有多少？
      回答：只与filter的尺寸，深度。以及当前层节点矩阵的深度有关
           例如：输入层矩阵的维度32x32x3，第一层卷积层使用尺寸5x5大小，深度为16的filter，参数有5x5x3x16个
+          filter:[filter_height, filter_width, in_channels, out_channels],那么
+          total filter_height*filter_width*out_channels*in_channels个
+          filter:[filter_height, filter_width, in_channels, out_channels],
+                   total filter_height*filter_width*out_channels*in_channels+个 （加上偏置项）
 思考4:strides怎么设置？
     回答：strides第一维和最后一维都为1，原因是卷积层的步长只对矩阵的长和宽有效，卷积层使用的filter是横跨整个深度的，filter只在长和宽两个维度上移动。
+思考5:这一层的输出矩阵大小如何计算？
+    回答：尺寸（长，宽） 如思考1
+         深度同filter深度
 
 
 2.Pooling layer
