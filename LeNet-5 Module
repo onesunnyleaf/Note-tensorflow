@@ -1,0 +1,36 @@
+LeNet-5 Module:
+1.卷积层covn
+    Input原始图像像素，32x32x1
+    filter：size 5x5，深度6
+    no zero-padding,stride 1
+
+    Output size:(32-5+1)/1=28,(32-5+1)/1=28 深度6, So the Input of next layer has 28*28*6=4704 Nodes
+
+    total has 5x5x1x6+6=156 parameters
+
+    For 4706 Nodes of next layer connect with the current layer 5x5=25 Nodes,So,total has (25+1)x4704=122304 connecters
+2.池化层pooling
+    Input:28x28x6 Node Matrix
+    filter:size 2x2
+    stride 2
+
+    Output size:ceil((28-2+1)/2)=14,ceil((28-2+1)/2)=14, 深度：6
+
+
+3.卷积层covn
+    Input:14x14x6 Node Matrix
+    filter:size 5x5,深度16
+    no zero-padding,stride 1
+    Output size:(14-5+1)/1=10,(14-5+1)/1=10,深度16，so the Input of next layer has 10*10*16=1600 Nodes
+    total has 5x5x6x16+16=2416 parameters
+    For 1600 Nodes of next layser connect with the current layer 5x5=25 Nodes,So total has (25+1)*1600=41600 Connecters
+3.池化层pooling
+    Input:10x10x16 Node matrix
+    filter:size 2x2
+    stride 2
+    Output size:ceil((10-2+1)/2)=5,ceil((10-2+1)/2)=5,深度 16
+4.全连接层FC
+    Input:5x5x16 Node Matrix
+    filter:size 5x5,so same as Full connect layer
+    Output ???
+    parameter ???
