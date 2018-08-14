@@ -1,0 +1,47 @@
+
+Image data process:
+问题 1.图像有哪些属性会影响图像识别？如何处理使得这些因素对图像准确识别影响尽可能小？
+大小：
+    一般来说，神经网络获取的图像数据大小是不固定的，但神经网络输入节点的个数是固定的。所以在将图像的像素作为输入提供给神经网络
+        之前需要图像大小统一，有两种方式：
+        一种是保存图像上完整的信息：函数tf.image.resize( , , ,method), method 有四种。
+        另一种对图像裁剪或者填充：tf.image.resize_image_with_crop_or_pad(),
+                                tf.image_crop_to_bounding_box(),
+                                tf.image_pad_to_bounding_box()
+角度：
+    训练神经网络时，对图像随机翻转，这样训练出来的模型可以识别不同角度的实体。
+    tf.image.random_flip_up_down()
+    tf.image.random_flip_left_right()
+亮度：
+    tf.image.adjust_brightness()
+    tf.image.random_brightness()
+对比度:
+    tf.image.adjust_contrast()
+    tf.image.random_contrast()
+色相：
+    tf.image.adjust_hue()
+    tf.image.random_hue()
+饱和度：
+    tf.image.adjust_saturation()
+    tf.image.random_saturation()
+
+除此之外，图像种需要关注的物体被标注框圈起来，然后截取标注框里的内容。
+
+通过以上处理，训练得到的神经网络就可以识别不同大小，不同方位，色彩等实体。
+
+问题2.实际的图像有哪些格式和属性，如何统一管理这些格式和属性呢？
+
+答：jpeg。jpg。png。。。。。。
+
+   TFRecord：tf.train.Example Protocol Buffer的格式存储的。
+   
+
+
+问题3.复杂的图像处理可能影响数据预处理速度，如何解决这个问题？
+
+
+问题4.图像数据实际上是如何存储的？
+答：一个RGB色彩模式的图像可以看出一个三位矩阵，矩阵的每一个数字表示了图像上的不同位置，不同颜色的亮度，然而图像存储不是直接
+    记录这些数据的，而是经过压缩编码之后的结果。所以要将一张图像还原城一个三维矩阵需要进行解码过程。
+    Tensorflow 编码解码函数tf.image.decode_jpeg(),tf.image.decode_png(),tf.image.encode_jpeg(),tf.image.encode_png()
+
